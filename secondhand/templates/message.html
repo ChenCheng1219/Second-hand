@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>消息中心 - 校园二手平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .chat-container { display: flex; max-width: 1000px; margin: 20px auto; height: 600px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .user-list { width: 250px; border-right: 1px solid #eee; overflow-y: auto; }
+        .chat-main { flex: 1; display: flex; flex-direction: column; }
+        .chat-history { flex: 1; padding: 20px; overflow-y: auto; background: #f9f9f9; }
+        .chat-input { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .msg { margin-bottom: 15px; padding: 10px; border-radius: 8px; max-width: 70%; }
+        .msg.sent { background: #dcf8c6; align-self: flex-end; margin-left: auto; }
+        .msg.received { background: white; border: 1px solid #eee; }
+    </style>
+</head>
+<body style="background: #f4f7f6;">
+    <div class="chat-container">
+        <div class="user-list">
+            <div style="padding: 15px; font-weight: bold; border-bottom: 1px solid #eee;">联系人</div>
+            {% for contact in contacts %}
+            <div style="padding: 15px; border-bottom: 1px solid #f9f9f9; cursor: pointer;">
+                <i class="fas fa-user-circle"></i> {{ contact.Username }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="chat-main">
+            <div class="chat-history" id="chatHistory">
+                <div class="msg received">你好！请问对这件宝贝有什么想了解的吗？</div>
+                {% for m in msgs %}
+                <div class="msg {{ 'sent' if m.SenderID == session.user_id else 'received' }}">
+                    {{ m.Content }}
+                </div>
+                {% endfor %}
+            </div>
+            <form class="chat-input" action="/send_msg" method="POST">
+                <input type="text" name="content" style="flex:1; border: 1px solid #ddd; border-radius: 4px; padding: 8px;" placeholder="输入消息...">
+                <button type="submit" style="background: #ff5722; color: white; border: none; padding: 8px 20px; border-radius: 4px;">发送</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
