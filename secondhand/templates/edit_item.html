@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Item - Campus Second-hand Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body { margin: 0; font-family: 'PingFang SC', sans-serif; background: url('/static/1.png') no-repeat center fixed; background-size: cover; }
+    .container { width: 650px; margin: 40px auto; background: rgba(255, 255, 255, 0.96); padding: 30px 45px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+    h2 { text-align: center; color: #333; margin-bottom: 25px; }
+
+    label { display: block; margin-top: 15px; font-weight: bold; color: #444; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
+    input:focus, select:focus, textarea:focus { border-color: #2196F3; outline: none; box-shadow: 0 0 5px rgba(33,150,243,0.3); }
+
+    .map-box { margin-top: 20px; border: 2px dashed #bbb; border-radius: 12px; padding: 15px; background: #fff; text-align: center; }
+    .map-box img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px; display: none; }
+    .map-box p { color: #888; font-size: 13px; margin: 5px 0; }
+    .active-map img { display: block; animation: fadeIn 0.4s ease-in; }
+
+    .btn-group { margin-top: 30px; display: flex; gap: 15px; }
+    .btn-update { flex: 1; background: #2196F3; color: white; border: none; padding: 14px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
+    .btn-update:hover { background: #1976D2; }
+    .btn-cancel { flex: 1; background: #9e9e9e; color: white; text-align: center; text-decoration: none; padding: 14px; border-radius: 30px; font-size: 16px; transition: 0.3s; }
+    .btn-cancel:hover { background: #757575; }
+    .home-btn { background: #ff5722; color: white; text-align: center; text-decoration: none; padding: 14px; border-radius: 30px; font-size: 16px; display: inline-block; margin-bottom: 20px; width: 100%; }
+    .nav-buttons { display: flex; gap: 15px; justify-content: space-between; margin-bottom: 20px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-buttons">
+        <a href="/" class="home-btn"><i class="fas fa-home"></i> Home</a>
+        <a href="/profile" class="btn-cancel" style="background: #666;"><i class="fas fa-arrow-left"></i> Back to Profile</a>
+    </div>
+
+    <h2><i class="fas fa-edit"></i> Edit Item</h2>
+
+    <form action="/update_item/{{ item.itemid }}" method="POST" enctype="multipart/form-data">
+
+      <label>Item Title</label>
+      <input type="text" name="title" value="{{ item.title }}" required placeholder="Enter a catchy title...">
+
+      <div style="display: flex; gap: 20px;">
+          <div style="flex: 1;">
+              <label>Category</label>
+              <select name="category">
+                <option value="book" {{ 'selected' if item.category == 'book' }}>Books</option>
+                <option value="digital" {{ 'selected' if item.category == 'digital' }}>Electronics</option>
+                <option value="daily" {{ 'selected' if item.category == 'daily' }}>Daily Supplies</option>
+                <option value="other" {{ 'selected' if item.category == 'other' }}>Other</option>
+              </select>
+          </div>
+          <div style="flex: 1;">
+              <label>Condition</label>
+              <select name="condition">
+                <option value="new" {{ 'selected' if item.condition == 'new' }}>New (Unused)</option>
+                <option value="used" {{ 'selected' if item.condition == 'used' }}>Used</option>
+              </select>
+          </div>
+      </div>
+
+      <label>Price (€)</label>
+      <input type="number" step="0.01" name="price" value="{{ item.price }}" required>
+
+      <label>Description</label>
+      <textarea name="description" rows="3" placeholder="Describe your item...">{{ item.description }}</textarea>
+
+      <label><i class="fas fa-map-marker-alt"></i> Pickup Location</label>
+        <select name="pickup_location" id="locationSelect" required>
+            <option value="">-- Select a classroom --</option>
+            {% for floor, rooms in all_rooms.items() %}
+                <optgroup label="{{ floor }}">
+                    {% for room in rooms %}
+                        <option value="{{ room }}" {{ 'selected' if item.pickuplocation == room }}>
+                            {{ room }}
+                        </option>
+                    {% endfor %}
+                </optgroup>
+            {% endfor %}
+        </select>
+
+      <div class="map-box" id="mapBox">
+          <p id="mapPlaceholder">Select a location to see the floor map</p>
+          <img id="floorImg" src="" alt="Floor Map Preview">
+      </div>
+
+      <label>Change Image (leave empty to keep current)</label>
+      <input type="file" name="image">
+
+      <div class="btn-group">
+        <button type="submit" class="btn-update">Save Changes</button>
+        <a href="/profile" class="btn-cancel">Cancel</a>
+      </div>
+    </form>
+</div>
+
+<script>
+    const locationSelect = document.getElementById('locationSelect');
+    const floorImg = document.getElementById('floorImg');
+    const mapBox = document.getElementById('mapBox');
+    const mapPlaceholder = document.getElementById('mapPlaceholder');
+
+    function updateMap(val) {
+        let imgPath = "";
+
+        if (val.startsWith('2') || ["JUPITER", "VEGA", "Library"].includes(val)) {
+            imgPath = "/static/uploads/floor_2.png";
+        } else if (val.startsWith('1') || ["Restaurant", "Cafe"].includes(val)) {
+            imgPath = "/static/uploads/floor_1.png";
+        } else if (val.startsWith('0') || ["Archive"].includes(val)) {
+            imgPath = "/static/uploads/floor_0.png";
+        }
+
+        if (imgPath) {
+            floorImg.src = imgPath;
+            mapBox.classList.add('active-map');
+            mapPlaceholder.style.display = 'none';
+        } else {
+            floorImg.src = "";
+            mapBox.classList.remove('active-map');
+            mapPlaceholder.style.display = 'block';
+        }
+    }
+
+    if (locationSelect.value) {
+        updateMap(locationSelect.value);
+    }
+
+    locationSelect.addEventListener('change', function() {
+        updateMap(this.value);
+    });
+</script>
+
+</body>
+</html>
