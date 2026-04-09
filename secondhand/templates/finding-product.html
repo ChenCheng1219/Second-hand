@@ -1,252 +1,148 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>宝贝分类 - 校园二手交易平台</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <style>
-    :root {
-      --primary-color: #ff5722;
-      --bg-overlay: rgba(255, 255, 255, 0.9);
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
-      background: #f4f7f6 url('/static/1.png') no-repeat center fixed;
-      background-size: cover;
-      min-height: 100vh;
-    }
-
-    /* 导航栏样式 [cite: 3] */
-    .header {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 15px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .logout-btn {
-      padding: 6px 18px;
-      background-color: #f44336;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: 0.3s;
-    }
-
-    /* 主体布局 */
-    .main-container {
-      display: flex;
-      max-width: 1200px;
-      margin: 30px auto;
-      gap: 20px;
-      padding: 0 20px;
-    }
-
-    /* 侧边过滤器 */
-    .sidebar {
-      width: 250px;
-      background: var(--bg-overlay);
-      padding: 20px;
-      border-radius: 12px;
-      height: fit-content;
-    }
-
-    .filter-group {
-      margin-bottom: 20px;
-    }
-
-    .filter-group h3 {
-      font-size: 16px;
-      border-left: 4px solid var(--primary-color);
-      padding-left: 10px;
-      margin-bottom: 15px;
-    }
-
-    .filter-group ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .filter-group li {
-      padding: 8px 0;
-      cursor: pointer;
-      color: #555;
-    }
-
-    .filter-group li:hover {
-      color: var(--primary-color);
-    }
-
-    /* 商品列表区 */
-    .content-area {
-      flex: 1;
-    }
-
-    .search-box {
-      background: var(--bg-overlay);
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    /* 商品卡片样式  */
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.3s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .product-img {
-      width: 100%;
-      height: 180px;
-      background: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ccc;
-    }
-
-    .product-info {
-      padding: 15px;
-    }
-
-    .product-title {
-      font-weight: bold;
-      margin-bottom: 8px;
-      font-size: 16px;
-      height: 44px;
-      overflow: hidden;
-    }
-
-    .product-price {
-      color: var(--primary-color);
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .product-meta {
-      font-size: 12px;
-      color: #888;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .btn-contact {
-      display: block;
-      width: 100%;
-      padding: 10px 0;
-      background: #2196f3;
-      color: white;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 0 0 12px 12px;
-      margin-top: auto;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - Campus Second-hand Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root { --primary-color: #ff5722; --blue-btn: #2196f3; }
+        body { margin: 0; padding: 0; font-family: 'PingFang SC', sans-serif; background: #f4f7f6 url('/static/1.png') no-repeat center fixed; background-size: cover; min-height: 100vh; }
+        .header { background: rgba(255, 255, 255, 0.9); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 22px; font-weight: bold; color: var(--primary-color); text-decoration: none; }
+        .user-nav { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+        .logout-btn { background: var(--primary-color); color: white; padding: 6px 15px; border-radius: 5px; text-decoration: none; }
+        .home-btn { background: #2196f3; color: white; padding: 6px 15px; border-radius: 5px; text-decoration: none; }
+        .main-container { display: flex; max-width: 1250px; margin: 30px auto; gap: 20px; padding: 0 20px; }
+        .sidebar { width: 240px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 20px; border-radius: 15px; height: fit-content; }
+        .filter-group { margin-bottom: 25px; }
+        .filter-group h3 { font-size: 16px; border-left: 4px solid var(--primary-color); padding-left: 10px; margin-bottom: 15px; }
+        .filter-link { display: block; padding: 8px 0; color: #555; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.2s; }
+        .filter-link:hover { color: var(--primary-color); transform: translateX(5px); }
+        .content-area { flex: 1; }
+        .search-box { background: white; padding: 8px; border-radius: 10px; display: flex; gap: 10px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .search-box input { flex: 1; border: none; padding: 10px 15px; outline: none; font-size: 15px; }
+        .search-box button { background: var(--primary-color); color: white; border: none; padding: 0 25px; border-radius: 8px; cursor: pointer; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .product-img-wrapper { width: 100%; height: 240px; background: #f9f9f9; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .condition-tag { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; }
+        .product-info { padding: 15px; flex-grow: 1; }
+        .product-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px; line-height: 1.2; height: 2.4em; overflow: hidden; }
+        .product-price { color: var(--primary-color); font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+        .product-price span { font-size: 14px; margin-right: 2px; }
+        .location-info { font-size: 13px; color: #666; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+        .map-link { color: var(--blue-btn); cursor: pointer; text-decoration: underline; font-size: 12px; }
+        .btn-contact { display: block; width: 100%; padding: 12px 0; background: var(--blue-btn); color: white; text-align: center; text-decoration: none; font-weight: bold; font-size: 15px; border-radius: 0 0 15px 15px; }
+        #mapModal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { position: relative; margin: 8% auto; width: 90%; max-width: 600px; background: white; border-radius: 12px; padding: 20px; text-align: center; }
+        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #999; }
+        .no-image-placeholder { height: 100%; display: flex; align-items: center; justify-content: center; background: #eee; }
+    </style>
 </head>
 <body>
 
-  <header class="header">
-    <a href="{{ url_for('index') }}" class="logo">二手交易平台</a>
-    <div class="user-info">
-      <span><i class="fas fa-user"></i> {{ username }}</span>
-      <a href="{{ url_for('logout') }}" class="logout-btn">退出</a>
+    <div id="mapModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeMap()">&times;</span>
+            <h3 id="mapTitle" style="margin-top:0;">Floor Map Guide</h3>
+            <img id="mapImg" src="" style="width: 100%; border-radius: 8px; margin: 10px 0;">
+            <p id="locText" style="font-weight: bold; color: var(--primary-color);"></p>
+        </div>
     </div>
-  </header>
 
-  <div class="main-container">
-    <aside class="sidebar">
-      <div class="filter-group">
-        <h3>商品分类</h3>
-        <ul>
-          <li><a href="{{ url_for('categories', type='book') }}" style="text-decoration:none; color:inherit;">书籍教材</a></li>
-          <li><a href="{{ url_for('categories', type='digital') }}" style="text-decoration:none; color:inherit;">数码产品</a></li>
-          <li><a href="{{ url_for('categories', type='daily') }}" style="text-decoration:none; color:inherit;">日用百货</a></li>
-          <li><a href="{{ url_for('categories', type='other') }}" style="text-decoration:none; color:inherit;">其他</a></li>
-        </ul>
-      </div>
-      <div class="filter-group">
-        <h3>新旧程度</h3>
-        <ul>
-          <li>全新</li>
-          <li>九成新</li>
-          <li>一般</li>
-        </ul>
-      </div>
-    </aside>
+    <header class="header">
+        <a href="/" class="logo">Campus Second-hand Platform</a>
+        <div class="user-nav">
+            <a href="/" class="home-btn"><i class="fas fa-home"></i> Home</a>
+            <span><i class="fas fa-user-circle"></i> Welcome, {{ username }}</span>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </header>
 
-    <main class="content-area">
-      <div class="search-box">
-        <input type="text" placeholder="搜索你想要的宝贝...">
-        <button style="padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer;">
-          搜索
-        </button>
-      </div>
-
-      <div class="product-grid">
-        {% for item in items %}
-        <div class="product-card">
-          <div class="product-img">
-            <i class="fas fa-image fa-3x"></i>
-          </div>
-          <div class="product-info">
-            <div class="product-title">{{ item.name }}</div>
-            <div class="product-price">￥{{ item.price_range }}</div>
-            <div class="product-meta">
-              <span><i class="fas fa-map-marker-alt"></i> {{ item.other_info.pickup_location }}</span>
-              <span>{{ item.other_info.condition }}</span>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h3>Categories</h3>
+                <a href="/categories?type=book" class="filter-link">Books & Textbooks</a>
+                <a href="/categories?type=digital" class="filter-link">Electronics</a>
+                <a href="/categories?type=daily" class="filter-link">Daily Supplies</a>
+                <a href="/categories" class="filter-link" style="color: var(--primary-color);">All Items</a>
             </div>
-          </div>
-          <a href="{{ url_for('messages', item_id=item.item_id) }}" class="btn-contact">联系卖家</a>
-        </div>
-        {% else %}
-        <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: var(--bg-overlay); border-radius: 12px;">
-            <p>暂无相关商品发布</p>
-        </div>
-        {% endfor %}
-      </div>
-    </main>
-  </div>
+            <div class="filter-group">
+                <h3>Condition</h3>
+                <a href="/categories?condition=new" class="filter-link">New</a>
+                <a href="/categories?condition=used" class="filter-link">Used</a>
+            </div>
+        </aside>
 
+        <main class="content-area">
+            <form action="/categories" method="GET" class="search-box">
+                <input type="text" name="q" placeholder="Search for items..." value="{{ request.args.get('q', '') }}">
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
+
+            <div class="product-grid">
+                {% for item in items %}
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        {% if item.imagepath and item.imagepath != 'None' and item.imagepath != '' and item.imagepath != 'default.png' %}
+                            <img src="/static/uploads/{{ item.imagepath }}"
+                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image-placeholder\' style=\'height:100%; width:100%; display:flex; align-items:center; justify-content:center; background:#eee;\'><i class=\'fas fa-image fa-4x\' style=\'color:#ccc;\'></i></div>'">
+                        {% else %}
+                            <div class="no-image-placeholder" style="height:100%; width:100%; display:flex; align-items:center; justify-content:center; background:#eee;">
+                                <i class="fas fa-image fa-4x" style="color:#ccc;"></i>
+                            </div>
+                        {% endif %}
+                        <div class="condition-tag">{{ 'New' if item.condition == 'new' else 'Used' }}</div>
+                    </div>
+
+                    <div class="product-info">
+                        <div class="product-title">{{ item.title if item.title else 'Unnamed Item' }}</div>
+                        <div class="product-price"><span>€</span>{{ "%.2f"|format(item.price|float) if item.price else '0.00' }}</div>
+                        <div class="location-info">
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary-color);"></i>
+                            {{ item.pickuplocation if item.pickuplocation else 'Unknown Location' }}
+                            <span class="map-link" onclick="openMap('{{ item.pickuplocation }}')">[View Map]</span>
+                        </div>
+                    </div>
+
+                    <a href="/chat/{{ item.itemid }}/{{ item.sellerid }}" class="btn-contact">Contact Seller</a>
+                </div>
+                {% else %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 80px; background: rgba(255,255,255,0.6); border-radius: 15px;">
+                    <i class="fas fa-box-open fa-4x" style="color: #ccc; margin-bottom: 20px;"></i>
+                    <p style="color: #888; font-size: 18px;">No items found in this category</p>
+                    <p style="color: #999; margin-top: 10px;"><a href="/publish" style="color: #ff5722;">Be the first to sell an item!</a></p>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function openMap(loc) {
+            const modal = document.getElementById('mapModal');
+            const img = document.getElementById('mapImg');
+            const title = document.getElementById('mapTitle');
+            const locText = document.getElementById('locText');
+            const locStr = String(loc).toUpperCase();
+            let floorFile = "floor_0.png";
+            if (locStr.startsWith('2')) {
+                floorFile = "floor_2.png"; title.innerText = "Second Floor Map";
+            } else if (locStr.startsWith('1')) {
+                floorFile = "floor_1.png"; title.innerText = "First Floor Map";
+            } else {
+                floorFile = "floor_0.png"; title.innerText = "Ground Floor Map";
+            }
+            img.src = "/static/uploads/" + floorFile;
+            locText.innerText = "Location: " + loc;
+            modal.style.display = "block";
+        }
+        function closeMap() { document.getElementById('mapModal').style.display = "none"; }
+        window.onclick = function(event) { if (event.target == document.getElementById('mapModal')) closeMap(); }
+    </script>
 </body>
 </html>
