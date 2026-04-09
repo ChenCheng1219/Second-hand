@@ -1,21 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>发布商品</title>
+  <title>Sell Item - Campus Second-hand Platform</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
-      background: #f4f7f6 url('/static/1.png') no-repeat center fixed;
+      font-family: 'PingFang SC', sans-serif;
+      background: url('/static/1.png') no-repeat center fixed;
       background-size: cover;
-      min-height: 100vh;
-      min-width: 1200px;
     }
-
     .header {
       background: rgba(255, 255, 255, 0.95);
       padding: 15px 40px;
@@ -24,149 +20,291 @@
       align-items: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+    .logo { font-size: 24px; font-weight: bold; color: #ff5722; text-decoration: none; }
+    .logout-btn { padding: 6px 18px; background-color: #f44336; color: white; text-decoration: none; border-radius: 20px; font-size: 14px; }
+    .home-btn { padding: 6px 18px; background-color: #2196f3; color: white; text-decoration: none; border-radius: 20px; font-size: 14px; margin-right: 10px; }
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #ff5722;
-    }
-
-    .user-info span {
-      margin-right: 15px;
-    }
-
-    .logout-btn {
-      padding: 6px 18px;
-      background-color: #f44336;
-      color: white;
-      text-decoration: none;
-      border-radius: 20px;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    .publish-container{
+    .publish-container {
       width: 600px;
       margin: 40px auto;
-      background: rgba(255,255,255,0.95);
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.96);
+      padding: 30px 45px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     }
-
-    .publish-container h2{
-      margin-bottom: 20px;
-      color: #333;
+    h2 { text-align: center; color: #333; margin-bottom: 25px; }
+    label { display: block; margin-top: 18px; font-weight: bold; color: #444; font-size: 14px; }
+    label .required { color: #f44336; }
+    input, select, textarea {
+      width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #ddd;
+      border-radius: 10px; box-sizing: border-box; font-size: 15px; transition: 0.2s;
     }
+    input:focus, select:focus, textarea:focus { border-color: #ff5722; outline: none; box-shadow: 0 0 0 2px rgba(255,87,34,0.1); }
 
-    .publish-container label{
-      display: block;
+    .image-upload-area {
+      margin-top: 8px;
+      border: 2px dashed #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .image-upload-area:hover {
+      border-color: #ff5722;
+      background: #fff5f2;
+    }
+    .image-upload-area i {
+      font-size: 48px;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+    .image-upload-area p {
+      margin: 5px 0;
+      color: #666;
+      font-size: 13px;
+    }
+    .image-preview {
       margin-top: 15px;
-      font-weight: bold;
-    }
-
-    .publish-container input,
-    .publish-container select,
-    .publish-container textarea{
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .btn-group{
-      margin-top: 20px;
+      display: none;
+      position: relative;
       text-align: center;
     }
-
-    .submit-btn{
-      background: #4CAF50;
+    .image-preview img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .remove-image {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #f44336;
       color: white;
-      padding: 10px 25px;
       border: none;
-      border-radius: 20px;
-      margin-right: 10px;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .file-input {
+      display: none;
     }
 
-    .submit-btn:hover{
-      background:#0000FF
+    .map-box {
+      margin-top: 20px; border: 2px dashed #ddd; border-radius: 12px;
+      padding: 15px; background: #fafafa; text-align: center; transition: 0.3s;
     }
-
-    .reset-btn{
-      background: #9e9e9e;
-      color: white;
-      padding: 10px 25px;
-      border: none;
-      border-radius: 20px;
-
+    .map-box img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px; display: none; }
+    .map-box p { color: #888; font-size: 13px; margin: 5px 0; }
+    .active-map { border-color: #ff5722; background: #fff8f5; }
+    .active-map img { display: block; animation: fadeIn 0.4s ease-in; }
+    .btn-group { margin-top: 30px; display: flex; gap: 15px; }
+    .submit-btn {
+      flex: 1; background: #ff5722; color: white; border: none;
+      padding: 14px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold;
     }
-
-    .reset-btn:hover{
-      background:#FFA500
+    .submit-btn:hover { background: #e64a19; }
+    .reset-btn {
+      flex: 1; background: #9e9e9e; color: white; border: none;
+      padding: 14px; border-radius: 30px; cursor: pointer; font-size: 16px;
     }
+    .reset-btn:hover { background: #757575; }
+    .price-hint { font-size: 12px; color: #999; margin-top: 5px; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .flash-messages { max-width: 600px; margin: 20px auto 0; }
+    .flash-item { background: #fff3cd; color: #856404; padding: 10px 15px; border-radius: 8px; margin-bottom: 10px; }
+    .nav-buttons { display: flex; gap: 10px; align-items: center; }
   </style>
 </head>
 <body>
 
   <div class="header">
-      <div class="logo"><i class="fas fa-store"></i> 发布商品 </div>
-      <div class="user-info">
+      <a href="/" class="logo"><i class="fas fa-store"></i> Campus Second-hand Platform</a>
+      <div class="nav-buttons">
+          <a href="/" class="home-btn"><i class="fas fa-home"></i> Home</a>
           <span><i class="fas fa-user"></i> {{ username }}</span>
-          <a href="{{ url_for('logout') }}" class="logout-btn">退出</a>
+          <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
       </div>
   </div>
 
-  <div class="publish-container">
-  <form action="{{ url_for('publish_item') }}" method="POST" enctype="multipart/form-data">
-
-    <h2>商品信息</h2>
-
-    <label>商品标题</label>
-    <input type="text" name="title" required placeholder="请输入商品名称">
-
-    <label>商品分类</label>
-    <select name="category">
-      <option value="book">书籍</option>
-      <option value="digital">数码产品</option>
-      <option value="daily">生活用品</option>
-      <option value="other">其他</option>
-    </select>
-
-    <label>新旧程度</label>
-    <select name="condition">
-      <option value="new">未使用</option>
-      <option value="used">已使用</option>
-    </select>
-
-    <label>价格</label>
-    <input type="number" name="price" required placeholder="请输入价格">
-
-    <label>商品描述</label>
-    <textarea name="description" rows="5" placeholder="描述一下商品的使用情况"></textarea>
-
-    <label>上传图片</label>
-    <input type="file" name="image">
-
-    <label>联系方式</label>
-    <input type="text" name="contact" placeholder="电话">
-
-    <div class="btn-group">
-      <button type="submit" class="submit-btn">立即发布</button>
-      <button type="reset" class="reset-btn">重置</button>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+        <div class="flash-item">{{ message }}</div>
+      {% endfor %}
     </div>
+    {% endif %}
+  {% endwith %}
 
-  </form>
-</div>
+  <div class="publish-container">
+    <h2><i class="fas fa-plus-circle"></i> Sell Your Item</h2>
+    <form action="{{ url_for('post_item') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+      <label>Item Title <span class="required">*</span></label>
+      <input type="text" name="title" required placeholder="Give your item an attractive title" maxlength="50">
 
+      <div style="display: flex; gap: 20px;">
+          <div style="flex: 1;">
+              <label>Category <span class="required">*</span></label>
+              <select name="category">
+                <option value="book">📚 Books & Textbooks</option>
+                <option value="digital">💻 Electronics</option>
+                <option value="daily">🏠 Daily Supplies</option>
+                <option value="other">🎁 Other</option>
+              </select>
+          </div>
+          <div style="flex: 1;">
+              <label>Condition <span class="required">*</span></label>
+              <select name="condition">
+                <option value="new">✨ New (Unused)</option>
+                <option value="used">🔄 Used</option>
+              </select>
+          </div>
+      </div>
 
-  <div class="footer">
-      <p>© 2026 校园二手交易服务平台 版权所有</p>
+      <label>Price <span class="required">*</span> (€)</label>
+      <input type="number" step="0.01" name="price" required placeholder="Enter price in Euros" id="priceInput" min="0">
+      <div class="price-hint">Currency: Euro (€)</div>
+
+      <label>Description</label>
+      <textarea name="description" rows="3" maxlength="200"></textarea>
+
+      <label><i class="fas fa-map-marker-alt"></i> Pickup Location <span class="required">*</span></label>
+      <select name="pickup_location" id="locationSelect" required>
+          <option value="">-- Select a classroom --</option>
+          {% for floor, rooms in all_rooms.items() %}
+              <optgroup label="{{ floor }}">
+                  {% for room in rooms %}
+                      <option value="{{ room }}">{{ room }}</option>
+                  {% endfor %}
+              </optgroup>
+          {% endfor %}
+      </select>
+
+      <div class="map-box" id="mapBox">
+          <p id="mapPlaceholder"><i class="fas fa-map"></i> Select a location to see the floor map</p>
+          <img id="floorImg" src="" alt="Floor Map Preview">
+      </div>
+
+      <label>Item Image <span class="required">*</span></label>
+      <div class="image-upload-area" onclick="document.getElementById('imageInput').click()">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Click to upload item image</p>
+          <p style="font-size: 12px; color: #999;">Supports jpg, png, gif, webp</p>
+      </div>
+      <div class="image-preview" id="imagePreview">
+          <img id="previewImg" src="">
+          <button type="button" class="remove-image" onclick="removeImage()">×</button>
+      </div>
+      <input type="file" name="image" id="imageInput" accept="image/*" required style="display: none;" onchange="previewImage(this)">
+
+      <div class="btn-group">
+        <button type="submit" class="submit-btn"><i class="fas fa-check"></i> Publish Now</button>
+        <button type="button" class="reset-btn" onclick="resetAll()"><i class="fas fa-undo"></i> Reset</button>
+      </div>
+    </form>
   </div>
+
+<script>
+    const locationSelect = document.getElementById('locationSelect');
+    const floorImg = document.getElementById('floorImg');
+    const mapBox = document.getElementById('mapBox');
+    const mapPlaceholder = document.getElementById('mapPlaceholder');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage() {
+        imageInput.value = '';
+        imagePreview.style.display = 'none';
+        previewImg.src = '';
+    }
+
+    function updateMap(val) {
+        let imgPath = "";
+        if (val.startsWith('2') || ["JUPITER", "VEGA", "LIBRARY"].includes(val)) {
+            imgPath = "/static/uploads/floor_2.png";
+        } else if (val.startsWith('1') || ["RESTAURANT", "CAFE"].includes(val)) {
+            imgPath = "/static/uploads/floor_1.png";
+        } else if (val.startsWith('0') || ["ARCHIVE"].includes(val)) {
+            imgPath = "/static/uploads/floor_0.png";
+        }
+
+        if (imgPath) {
+            floorImg.src = imgPath;
+            mapBox.classList.add('active-map');
+            mapPlaceholder.style.display = 'none';
+        } else {
+            resetMap();
+        }
+    }
+
+    function resetMap() {
+        floorImg.src = "";
+        mapBox.classList.remove('active-map');
+        mapPlaceholder.style.display = 'block';
+    }
+
+    function resetAll() {
+        document.querySelector('form').reset();
+        resetMap();
+        removeImage();
+    }
+
+    function validateForm() {
+        const price = parseFloat(document.getElementById('priceInput').value);
+        if (isNaN(price) || price <= 0) {
+            alert('Please enter a valid price (greater than 0)');
+            return false;
+        }
+        if (price > 99999) {
+            alert('Price cannot exceed €99,999');
+            return false;
+        }
+        const location = locationSelect.value;
+        if (!location) {
+            alert('Please select a pickup location');
+            return false;
+        }
+        const imageFile = imageInput.files[0];
+        if (!imageFile) {
+            alert('Please upload an item image');
+            return false;
+        }
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(imageFile.type)) {
+            alert('Only image formats are supported: jpg, png, gif, webp');
+            return false;
+        }
+        return confirm('Confirm to publish this item?');
+    }
+
+    locationSelect.addEventListener('change', function() {
+        updateMap(this.value);
+    });
+
+    if (locationSelect.value) {
+        updateMap(locationSelect.value);
+    }
+</script>
 
 </body>
 </html>
